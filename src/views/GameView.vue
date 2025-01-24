@@ -75,7 +75,7 @@ export default {
     async initMap() {
       await window.mapkit.init({
         authorizationCallback: function (done) {
-          fetch("https://alex.polan.sk/people-map/verify.php")
+          fetch("https://alex.polan.sk/guess_the_way/verify.php")
             .then((res) => res.text())
             .then(done);
         },
