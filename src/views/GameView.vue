@@ -10,7 +10,7 @@
   </header>
   <div id="map" style="width: 100%; height: 100vh"></div>
   <div id="floating-input">
-    <h1>Go from {{ countryPair.from }} to {{ countryPair.to }}</h1>
+    <h1>Connect {{ countryPair.from }} with {{ countryPair.to }}</h1>
     <form @submit.prevent="updateCountrie">
       <input
         type="text"
@@ -20,6 +20,15 @@
     </form>
   </div>
   <button id="reload-button" @click="reloadGame">&#x21bb;</button>
+
+  <div v-if="showModal" class="modal">
+    <div class="modal-content">
+      <span class="close" @click="closeModal">&times;</span>
+      <h2>Congratulations!</h2>
+      <p>You have successfully connected {{ countryPair.from }} with {{ countryPair.to }}.</p>
+      <button @click="reloadGame">Play Again</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -42,6 +51,7 @@ export default {
       map: shallowRef(null),
       MAP_COLORS: [],
       guessedCountries: [],
+      showModal: false,
     };
   },
   async mounted() {
@@ -235,6 +245,7 @@ export default {
         ) {
           const jsConfetti = new JSConfetti();
           jsConfetti.addConfetti();
+          this.showModal = true;
           console.log("Correct!");
         } else {
           console.log("Incorrect!");
@@ -311,6 +322,7 @@ export default {
       this.countryPair = getRandomCountryPair();
       this.guessedCountries = [];
       this.countriee = "";
+      this.showModal = false;
 
       this.$axios.get("countries.php").then((response) => {
         this.map.overlays.forEach((overlay) => this.map.removeOverlay(overlay));
@@ -389,6 +401,9 @@ export default {
           console.log(geoJSON);
         },
       };
+    },
+    closeModal() {
+      this.showModal = false;
     },
   },
 };
@@ -500,5 +515,44 @@ export default {
 
 #reload-button:hover {
   background-color: rgba(255, 255, 255, 0.8);
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
