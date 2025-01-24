@@ -2,11 +2,10 @@
   <header class="app-header">
     <h1>Guess the Way!</h1>
     <p class="app-description">
-      In this game, you are given two countries and must find a path of
-      neighboring countries connecting them. You can guess any number of
-      countries in between, but the order doesn't matter. The goal is to ensure
-      all guessed countries are correctly connected in the network of
-      neighboring countries.
+      In this game, you get two countries, and your job is to guess other
+      countries that connect them by sharing borders. Each country you guess has
+      to touch the previous one, like building a chain. If you guess a country
+      that's not in the chain, it won't help you connect the two countries.
     </p>
   </header>
   <div id="map" style="width: 100%; height: 100vh"></div>
