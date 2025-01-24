@@ -5,7 +5,9 @@
       In this game, you get two countries, and your job is to guess other
       countries that connect them by sharing borders. Each country you guess has
       to touch the previous one, like building a chain. If you guess a country
-      that's not in the chain, it won't help you connect the two countries.
+      that's not in the chain, it won't help you connect the two countries. if
+      you misspell a country's name, it won't be accepted, so be careful with
+      your spelling!
     </p>
   </header>
   <div id="map" style="width: 100%; height: 100vh"></div>
@@ -25,7 +27,10 @@
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
       <h2>Congratulations!</h2>
-      <p>You have successfully connected {{ countryPair.from }} with {{ countryPair.to }}.</p>
+      <p>
+        You have successfully connected {{ countryPair.from }} with
+        {{ countryPair.to }}.
+      </p>
       <button @click="reloadGame">Play Again</button>
     </div>
   </div>
