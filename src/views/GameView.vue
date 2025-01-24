@@ -10,17 +10,8 @@
     </p>
   </header>
   <div id="map" style="width: 100%; height: 100vh"></div>
-  <!-- <div id="country-pair">
-    From: {{ countryPair.from }} To: {{ countryPair.to }}
-  </div>-->
   <div id="floating-input">
     <h1>Go from {{ countryPair.from }} to {{ countryPair.to }}</h1>
-    <!-- <div class="outline-checkbox">
-      <label>
-        Show Outlines:
-        <input v-model="showOutline" type="checkbox" />
-      </label>
-    </div>-->
     <form @submit.prevent="updateCountrie">
       <input
         type="text"
@@ -28,14 +19,8 @@
         placeholder="Enter country name and press Enter"
       />
     </form>
-    <!--<strong>Read the Readme.md for instructions on how to play.</strong>-->
   </div>
   <button id="reload-button" @click="reloadGame">&#x21bb;</button>
-  <!--<form action=""></form>
-  <form @submit.prevent="updateCountrie">
-    <input type="text" v-model="countriee" placeholder="Enter Countrie..." />
-    <button type="submit">Submit</button>
-  </form>-->
 </template>
 
 <script>
@@ -45,7 +30,6 @@ import {
   formatCountryName,
 } from "../getCountries.js";
 import { shallowRef } from "vue";
-//import axios from "axios";
 import JSConfetti from "js-confetti";
 
 export default {
@@ -83,10 +67,7 @@ export default {
       });
 
       const region = new window.mapkit.CoordinateRegion(
-        // new window.mapkit.Coordinate(47.687284, 24.847534),
         new window.mapkit.Coordinate(49.187719, 19.95125),
-
-        //new window.mapkit.CoordinateSpan(50.0, 100.0)
         new window.mapkit.CoordinateSpan(40.0, 80.0)
       );
 
@@ -94,8 +75,6 @@ export default {
         mapType: window.mapkit.Map.MapTypes.Satellite,
         center: new window.mapkit.Coordinate(47.687284, 24.84753),
         region: region,
-        ///showsUserLocation: true,
-        //showsUserLocationControl: true,
       });
       map.showsCompass = window.mapkit.FeatureVisibility.Visible;
       this.map = map;
@@ -132,35 +111,6 @@ export default {
         },
       ];
       this.MAP_COLORS = MAP_COLORS;
-      /*  try {
-        const response = await this.$axios.get("pins.php");
-
-        if (response.data.error) {
-          console.error(response.data.error);
-          this.$router.push("/");
-          return;
-        }
-
-        this.pins = response.data;
-        if (this.pins.length > 0) {
-          this.pins.forEach((pin) => {
-            const coordinate = new window.mapkit.Coordinate(
-              Number(pin.latitude),
-              Number(pin.longitude)
-            );
-            const annotation = new window.mapkit.MarkerAnnotation(coordinate, {
-              title: pin.title,
-              // Maybe later :)
-              /*  color: "#160808",
-              glyphText: "🏠",
-            });
-            map.addAnnotation(annotation);
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching bases:", error);
-        return;
-      }*/
 
       let geoJSONParserDelegate = {
         itemForPolygon: function (overlay) {
@@ -224,21 +174,6 @@ export default {
         },
       };
 
-      /*var mapLegend = document.querySelector(".map-legend");
-
-      function addLegend() {
-        let el, textNode;
-        MAP_COLORS.forEach(function (mColor) {
-          el = document.createElement("div");
-          textNode = document.createTextNode(mColor.range);
-          el.appendChild(textNode);
-          el.style.background = mColor.color;
-          mapLegend.appendChild(el);
-        });
-      }
-
-      addLegend();*/
-
       this.$axios.get("countries.php").then((response) => {
         let data = response.data;
         console.log(data);
@@ -254,63 +189,6 @@ export default {
         });
         window.mapkit.importGeoJSON(data, geoJSONParserDelegate);
       });
-      /* window.mapkit.importGeoJSON(
-        "https://alex.polan.sk/people-map/countries.php",
-        geoJSONParserDelegate
-      );*/
-
-      /*map.addEventListener("select", (event) => {
-        if (!event.shiftKey && !this.isPlacingPin) {
-          const country = event.overlay.data.name;
-          console.log(country);
-
-          if (event.overlay) {
-            if (confirm("You selected " + country)) {
-              console.log("You selected an overlay. " + country);
-
-              if (
-                !localStorage.getItem("voted") ||
-                localStorage.getItem("voted") !== "true"
-              ) {
-                // Submit data to backend using axios
-                this.$axios
-                  .post(
-                    "data.php",
-                    this.$qs.stringify({
-                      country: country,
-                    })
-                  )
-                  .then((response) => {
-                    console.log(response.data);
-                    if (response.data.status === "success") {
-                      localStorage.setItem("voted", "true");
-
-                      axios
-                        .get("https://alex.polan.sk/people-map/countries.php")
-                        .then((response) => {
-                          map.overlays.forEach((overlay) =>
-                            map.removeOverlay(overlay)
-                          );
-
-                          window.mapkit.importGeoJSON(
-                            response.data,
-                            geoJSONParserDelegate
-                          );
-                        });
-                    } else {
-                      alert("Error: " + response.data.message);
-                    }
-                  })
-                  .catch((error) => {
-                    console.error("Error:", error);
-                  });
-              } else {
-                alert("You have already selected a country.");
-              }
-            }
-          }
-        }
-      });*/
     },
     updateCountrie() {
       this.countrie = this.countriee;
@@ -429,24 +307,11 @@ export default {
       this.guessedCountries = this.guessedCountries.map((country) =>
         country.toLowerCase()
       );
-
-      /*.then(
-        (result) => {
-          if (result) {
-            alert("Correct!");
-            this.countryPair = getRandomCountryPair();
-            this.guessedCountries = [];
-          } else {
-            alert("Incorrect!");
-          }
-        }
-      );*/
     },
     reloadGame() {
       this.countryPair = getRandomCountryPair();
       this.guessedCountries = [];
       this.countriee = "";
-      // Add any additional logic to reset the game state
 
       this.$axios.get("countries.php").then((response) => {
         this.map.overlays.forEach((overlay) => this.map.removeOverlay(overlay));
@@ -465,7 +330,7 @@ export default {
       });
 
       let geoJSONParserDelegate = {
-        itemForPolygon: (overlay) =>{
+        itemForPolygon: (overlay) => {
           let strokeOpacity = 0.8;
           let lineWidth = 1;
           if (!this.showOutline) {
@@ -484,7 +349,7 @@ export default {
           return overlay;
         },
 
-        itemForFeature: (overlay, geoJSON) =>{
+        itemForFeature: (overlay, geoJSON) => {
           const counter = geoJSON.properties.count;
 
           overlay.data = {
@@ -549,7 +414,7 @@ export default {
     rgba(0, 0, 0, 0) 60%,
     rgba(0, 0, 0, 0.6) 100%
   );
-  z-index: 1000; /* Ensure the vignette is above other elements */
+  z-index: 1000;
 }
 
 #floating-input {
@@ -590,17 +455,13 @@ export default {
 .app-header {
   text-align: center;
   margin: 0;
-  z-index: 1001; /* Ensure the header is above other elements */
+  z-index: 1001;
   position: absolute;
-  background-color: transparent; /* Completely transparent background */
+  background-color: transparent;
   text-align: center;
   justify-content: center;
   width: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.6),
-    rgba(0, 0, 0, 0)
-  ); /* Gradient shadow from top */
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
   margin-bottom: 10px;
 }
 
