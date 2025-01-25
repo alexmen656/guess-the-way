@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 
-$json_file_path = 'data/europe_cleaned.min.geojson';
+$json_file_path = 'data/europe_cleaned_filtered.min.geojson';
 
 if (file_exists($json_file_path)) {
     $json_data = file_get_contents($json_file_path);
