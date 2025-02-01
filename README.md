@@ -25,6 +25,14 @@ PHP: The server-side language used for handling game logic and API requests.
 Data:
 GeoJSON: Used for storing and managing geographical data, such as country borders
 
+## Demo
+[https://alex.polan.sk/guess-the-way/](https://alex.polan.sk/guess-the-way/)
+
+## Screenshots
+![Screenshot - 1](screenshots/1.png)
+![Screenshot - 2](screenshots/2.png)
+![Screenshot - 3](screenshots/3.png)
+
 ## Project setup
 ```
 npm install
